@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import Exception.Customer.CheckCustomerID;
 import Exception.Customer.CheckCustomerName;
 
 public class Customer {
@@ -54,18 +55,37 @@ public class Customer {
         }
     }
 
-    //Add existing customer to the Customer file
-    public void AddCustomer(Customer customer) {
-        File file = new File("Resources/Customers.txt");
-        FileWriter fw;
-        try {
-            fw = new FileWriter(file.getAbsolutePath(), true);
-            fw.write("Customer: " + CustomerName + "| ID: : " + CustomerID + "| Adress:  " + Address + "| Phone: " + Phone + "\n");
+    //Add existing customer to the file of Customers
+    public void AddCustomer() {
+        // Before adding, check if the customer has at least the name and ID
+        if (CustomerID != 0 && (CustomerName != "" || CustomerName != null)) {
+            File file = new File("Resources/Customers.txt");
+            FileWriter fw;
+            try {
+                fw = new FileWriter(file.getAbsolutePath(), true);
+                fw.write("Customer: " + CustomerName + "| ID: " + CustomerID + "| Address:  " + Address + "| Phone: " + Phone + "\n");
 
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                fw.flush();
+                fw.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        else if (CustomerID == 0){
+            try {
+                throw new CheckCustomerID("The customer ID is not valid");
+            } catch (CheckCustomerID e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        else if (CustomerName != "" || CustomerName != null) {
+            try {
+                throw new CheckCustomerName("The customer name is not valid");
+            } catch (CheckCustomerName e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

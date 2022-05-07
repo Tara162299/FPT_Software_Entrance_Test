@@ -1,4 +1,5 @@
 import Exception.Product.CheckProduct;
+import Exception.Product.CheckProductID;
 import Exception.Product.CheckProductType;
 
 import java.io.File;
@@ -11,6 +12,8 @@ public class Product {
     private String ProductType;
 
     private int OrderId;
+
+    public Product(){}
 
     public Product(int ProductId, float ProductPrice, String ProductType) {
         this.ProductId = ProductId;
@@ -29,17 +32,26 @@ public class Product {
     }
 
     // Add the product to the file of products
-    public void AddProduct(int ProductId) {
-        File file = new File("Resources/Orders.txt");
-        FileWriter fw;
+    public void AddProduct() {
         try {
-            fw = new FileWriter(file.getAbsolutePath(), true);
-            fw.write("Product ID: " + ProductId + "| Product price: " + ProductPrice + "| Product type: " + ProductType + "\n");
+            if (ProductId != 0) {
+                File file = new File("Resources/Orders.txt");
+                FileWriter fw;
+                try {
+                    fw = new FileWriter(file.getAbsolutePath(), true);
+                    fw.write("Product ID: " + ProductId + "| Product price: " + ProductPrice + "| Product type: " + ProductType + "\n");
 
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+                    fw.flush();
+                    fw.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                throw new CheckProductID("The product ID is not valid. Please update the product ID");
+            }
+        }
+        catch (CheckProductID ex) {
+            ex.printStackTrace();
         }
     }
 

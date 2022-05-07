@@ -12,6 +12,7 @@ public class Runner {
 
         Customer customer1 = new Customer(5, "Tara", "116", "202.555.1255");
         Customer customer2 = new Customer();
+        customer2.AddCustomer();
 
         //customer2.EditCustomer(5, "Martin", "116", null);
 
