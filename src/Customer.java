@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import Exception.Customer.CheckCustomerName;
@@ -7,6 +10,13 @@ public class Customer {
     private String CustomerName;
     private String Address;
     private String Phone;
+
+    public String getCustomerName() {
+        return CustomerName;
+    }
+    public int getCustomerID() {
+        return CustomerID;
+    }
 
     public Customer(int CustomerID, String CustomerName, String Address, String Phone) {
         this.CustomerID = CustomerID;
@@ -44,6 +54,17 @@ public class Customer {
 
     //Add existing customer to the database
     public void AddCustomer(Customer customer) {
+        File file = new File("Resources/Customers.txt");
+        FileWriter fw;
+        try {
+            fw = new FileWriter(file.getAbsolutePath());
+            fw.write("Customer: " + CustomerName + "| ID: : " + CustomerID + "| Adress:  " + Address + "| Phone: " + Phone + "\n");
+
+            fw.flush();
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Edit info from an existing Customer, including all attributes
