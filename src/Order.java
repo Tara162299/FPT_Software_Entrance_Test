@@ -17,6 +17,14 @@ public class Order {
     private int CustomerId;
     private String CustomerName;
 
+    public int getOrderId() {
+        return OrderId;
+    }
+    public int getProductId() {
+        return ProductId;
+    }
+    public void setProductId(int ProductId) {this.ProductId = ProductId;}
+
     public Order() {
     }
 
@@ -26,21 +34,20 @@ public class Order {
 
         //Check validity of Order's amount
         try {
-            if (Amount < 0) {
+            if (Amount <= 0) {
                 throw new CheckOrderAmount("The order amount must be a positive number");
             } else if (Amount > (int) Amount) {
                 throw new CheckOrderAmount("The order amount must be a round integer");
             } else {
                 this.Amount = Amount;
             }
-        } catch (
-                CheckOrderAmount e) {
+        } catch (CheckOrderAmount e) {
             throw new RuntimeException(e);
         }
 
         // Check validity of Order's date
         try {
-            Date TodayDate= new Date();
+            Date TodayDate = new Date();
             Date date = new SimpleDateFormat("dd/MM/yyyy").parse(OrderDate);
 
             Pattern OrderDatePattern = Pattern.compile("^(0[1-9]|1\\d|2\\d|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/(\\d{4})$");
@@ -76,7 +83,10 @@ public class Order {
         File file = new File("Resources/Orders.txt");
         FileWriter fw;
         try {
-            fw = new FileWriter(file.getAbsolutePath());
+            if (OrderId != 0 ) {
+
+            }
+            fw = new FileWriter(file.getAbsolutePath(), true);
             fw.write("Order ID: " + OrderId + "| Customer name: " + CustomerName + "| Customer ID: " + CustomerId + "| Product ID: " + ProductId
                     + "| Amount: " + Amount + "| Order date: " + OrderDate + "\n");
 
@@ -107,7 +117,7 @@ public class Order {
 
         // Check validity of the updated Order's date
         try {
-            Date TodayDate= new Date();
+            Date TodayDate = new Date();
             Date date = new SimpleDateFormat("dd/MM/yyyy").parse(OrderDate);
 
             Pattern OrderDatePattern = Pattern.compile("^(0[1-9]|1\\d|2\\d|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/(\\d{4})$");

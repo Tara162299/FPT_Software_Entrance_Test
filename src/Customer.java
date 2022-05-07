@@ -14,8 +14,13 @@ public class Customer {
     public String getCustomerName() {
         return CustomerName;
     }
+
     public int getCustomerID() {
         return CustomerID;
+    }
+
+
+    public Customer() {
     }
 
     public Customer(int CustomerID, String CustomerName, String Address, String Phone) {
@@ -49,15 +54,12 @@ public class Customer {
         }
     }
 
-    public Customer() {
-    }
-
-    //Add existing customer to the database
+    //Add existing customer to the Customer file
     public void AddCustomer(Customer customer) {
         File file = new File("Resources/Customers.txt");
         FileWriter fw;
         try {
-            fw = new FileWriter(file.getAbsolutePath());
+            fw = new FileWriter(file.getAbsolutePath(), true);
             fw.write("Customer: " + CustomerName + "| ID: : " + CustomerID + "| Adress:  " + Address + "| Phone: " + Phone + "\n");
 
             fw.flush();

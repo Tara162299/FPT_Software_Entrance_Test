@@ -10,12 +10,14 @@ import java.util.Date;
 public class Runner {
     public static void main(String[] args) throws CheckCustomerName {
 
-        Customer customer = new Customer(5, "Tara", "116", "202.555.1255");
-        //Customer customer1 = new Customer(5, "", "116", 15);
-        // Customer customer2 = new Customer(5, null, "116", 15);
-        customer.EditCustomer(5, "Martin", "116", null);
+        Customer customer1 = new Customer(5, "Tara", "116", "202.555.1255");
+        Customer customer2 = new Customer();
 
-        Order order = new Order(5, 5, 5f, "30/02/2023");
+        //customer2.EditCustomer(5, "Martin", "116", null);
+
+        //Order order1 = new Order(5, 5, 5f, "30/02/2023");
+        Order order2 = new Order();
+        System.out.print(order2.getProductId());
 
     }
 }
