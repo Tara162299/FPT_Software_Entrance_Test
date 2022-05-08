@@ -57,9 +57,9 @@ public class Customer {
 
             if (Phone == null) {
                 this.Phone = null;
-            } else if (Phone == "") {
+            } else if (Phone.equals("")) {
                 this.Phone = "";
-            }else if (!(PhonePattern.matcher(Phone).matches())) {
+            } else if (!(PhonePattern.matcher(Phone).matches())) {
                 throw new CheckCustomerName("The customer phone number is not valid. Please enter a valid phone number");
             } else {
                 this.Phone = Phone;
@@ -73,7 +73,7 @@ public class Customer {
     public void AddCustomer() {
 
         // Before adding, check if the customer has at least valid name and ID
-        if (CustomerID > 0 && (CustomerName != "" && CustomerName != null)) {
+        if (CustomerID > 0 && !CustomerName.equals("")) {
             File file = new File("Resources/Customers.txt");
             FileWriter fw;
             try {
@@ -85,17 +85,13 @@ public class Customer {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        else if (CustomerID <= 0){
+        } else if (CustomerID <= 0) {
             try {
                 throw new CheckCustomerID("The customer ID is not valid. Cannot add this customer to the Customer file");
             } catch (CheckCustomerID e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        else if (CustomerName == "" || CustomerName == null) {
+        } else {
             try {
                 throw new CheckCustomerName("The customer name is not valid. Cannot add this customer to the Customer file");
             } catch (CheckCustomerName e) {
@@ -137,7 +133,7 @@ public class Customer {
 
             if (Phone == null) {
                 this.Phone = null;
-            } else if (Phone == "") {
+            } else if (Phone.equals("")) {
                 this.Phone = "";
             } else if (!(PhonePattern.matcher(Phone).matches())) {
                 throw new CheckCustomerName("The adjusted value for customer phone number is not valid");
