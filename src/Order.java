@@ -24,10 +24,14 @@ public class Order {
     public int getOrderId() {
         return OrderId;
     }
+
     public int getProductId() {
         return ProductId;
     }
-    public void setProductId(int ProductId) {this.ProductId = ProductId;}
+
+    public void setProductId(int ProductId) {
+        this.ProductId = ProductId;
+    }
 
     public Order() {
     }
@@ -70,11 +74,6 @@ public class Order {
 
         // Check validity of Order's date
         try {
-            Date TodayDate = new Date();
-            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(OrderDate);
-
-            Pattern OrderDatePattern = Pattern.compile("^(0[1-9]|1\\d|2\\d|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/(\\d{4})$");
-
             // Special cases of dates that are invalid.
             if (OrderDate.startsWith("30")) {
                 throw new CheckOrderDate("The order date is not valid");
@@ -84,6 +83,14 @@ public class Order {
                 throw new CheckOrderDate("The order date is not valid");
             }
 
+            if (OrderDate == "" || OrderDate == null) {
+                throw new CheckOrderDate("The order date can not be empty");
+            }
+
+            Date TodayDate = new Date();
+            Date date = new SimpleDateFormat("dd/MM/yyyy").parse(OrderDate);
+
+            Pattern OrderDatePattern = Pattern.compile("^(0[1-9]|1\\d|2\\d|3[0-1]|[1-9])/(0[1-9]|1[0-2]|[1-9])/(\\d{4})$");
             // Check if the date input have the format of "dd/MM/yyyy"
             if (!(OrderDatePattern.matcher(OrderDate).matches())) {
                 throw new CheckOrderDate("The order date is not valid");
@@ -127,15 +134,34 @@ public class Order {
     }
 
     public void EditOrder(int OrderId, int ProductId, float Amount, String OrderDate) {
-        this.OrderId = OrderId;
-        this.ProductId = ProductId;
+        //Check the validity of the adjusted Order's ID
+        try {
+            if (OrderId <= 0) {
+                throw new CheckOrderID("The adjusted value for order ID is not valid.");
+            } else {
+                this.OrderId = OrderId;
+            }
+        } catch (CheckOrderID ex) {
+            ex.printStackTrace();
+        }
+
+        //Check the validity of the adjusted Product's ID
+        try {
+            if (ProductId <= 0) {
+                throw new CheckProductID("The adjusted value for product ID for the order is not valid.");
+            } else {
+                this.ProductId = ProductId;
+            }
+        } catch (CheckProductID ex) {
+            ex.printStackTrace();
+        }
 
         //Check validity of the updated Order's amount
         try {
             if (Amount < 0) {
-                throw new CheckOrderAmount("The order amount must be a positive number");
+                throw new CheckOrderAmount("The adjusted value for order amount must be a positive number");
             } else if (Amount > (int) Amount) {
-                throw new CheckOrderAmount("The order amount must be a round integer");
+                throw new CheckOrderAmount("The adjusted value for order amount must be a round integer");
             } else {
                 this.Amount = Amount;
             }
@@ -153,20 +179,20 @@ public class Order {
 
             // Special cases of dates that are invalid.
             if (OrderDate.startsWith("30")) {
-                throw new CheckOrderDate("The order date is not valid");
+                throw new CheckOrderDate("The adjusted order date is not valid");
             }
 
             if (OrderDate.startsWith("00") || OrderDate.startsWith("00", 3)) {
-                throw new CheckOrderDate("The order date is not valid");
+                throw new CheckOrderDate("The adjusted order date is not valid");
             }
 
             // Check if the date input have the format of "dd/MM/yyyy"
             if (!(OrderDatePattern.matcher(OrderDate).matches())) {
-                throw new CheckOrderDate("The order date is not valid");
+                throw new CheckOrderDate("The adjusted order date is not valid");
 
                 // Check if the date input is less than current date
             } else if (date.compareTo(TodayDate) < 0) {
-                throw new CheckOrderDate("The order date can not be less than the current date");
+                throw new CheckOrderDate("The adjusted order date can not be less than the current date");
             } else {
                 this.OrderDate = OrderDate;
             }

@@ -1,5 +1,6 @@
 import Exception.Product.CheckProduct;
 import Exception.Product.CheckProductID;
+import Exception.Product.CheckProductPrice;
 import Exception.Product.CheckProductType;
 
 import java.io.File;
@@ -16,8 +17,27 @@ public class Product {
     public Product(){}
 
     public Product(int ProductId, float ProductPrice, String ProductType) {
-        this.ProductId = ProductId;
-        this.ProductPrice = ProductPrice;
+        //Check the validity of the Product's ID
+        try {
+            if (ProductId <= 0) {
+                throw new CheckProductID("The value for product ID is not valid.");
+            } else {
+                this.ProductId = ProductId;
+            }
+        } catch (CheckProductID ex) {
+            ex.printStackTrace();
+        }
+
+        //Check the validity of the Product's price
+        try {
+            if (ProductPrice <= 0) {
+                throw new CheckProductPrice("The value for product price is not valid.");
+            } else {
+                this.ProductPrice = ProductPrice;
+            }
+        } catch (CheckProductPrice ex) {
+            ex.printStackTrace();
+        }
 
         //Check the validity of product's type
         try {

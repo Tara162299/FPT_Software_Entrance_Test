@@ -12,11 +12,11 @@ public class Runner {
 
         Customer customer1 = new Customer(5, "Tara", "116", "202.555.1255");
         Customer customer2 = new Customer();
-        customer2.AddCustomer();
+        //customer2.AddCustomer();
 
         //customer2.EditCustomer(5, "Martin", "116", null);
 
-        //Order order1 = new Order(5, 5, 5f, "30/02/2023");
+        Order order1 = new Order(5, 5, 5f, "00/11/2022");
         Order order2 = new Order();
         System.out.print(order2.getProductId());
 
