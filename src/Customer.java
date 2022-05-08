@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Pattern;
 
 import Exception.Customer.CheckCustomerID;
@@ -146,6 +144,28 @@ public class Customer {
     }
 
     //Remove this customer from
-    public void DeleteCustomer() {
+    public void DeleteCustomer() throws IOException {
+        File inputFile = new File("Resources/Customers.txt");
+        File tempFile = new File("Resources/temp_Customers.txt");
+
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+        String lineToRemove = "Customer: " + CustomerName + "| ID: " + CustomerID + "| Address:  " + Address + "| Phone: " + Phone + "\n";
+        String currentLine;
+
+        int count = 0;
+
+        while ((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(lineToRemove)) continue;
+            writer.write(currentLine + System.getProperty("line.separator"));
+        }
+
+        writer.close();
+        reader.close();
+        inputFile.delete();
+        tempFile.renameTo(inputFile);
     }
 }

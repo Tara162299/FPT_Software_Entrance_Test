@@ -1,7 +1,4 @@
-import Exception.Product.CheckProduct;
 import Exception.Product.CheckProductID;
-import Exception.Product.CheckProductPrice;
-import Exception.Product.CheckProductType;
 import Exception.Stock.CheckProductQuantity;
 import Exception.Stock.CheckProductShop;
 import Exception.Stock.CheckStock;
@@ -114,26 +111,25 @@ public class Stock {
     }
 
     // Add product to an existing order
-    public void SelectStockItem(int ProductId) {
+    public void SelectStockItem(int Quantity) {
 
         try {
-            // check if the selected order has already had a different product
-            if (order.getProductId() > 0 && order.getProductId() != this.ProductId) {
-                throw new CheckProduct("The selected order has already had a product");
+            // check if the stock for the product is currently empty
+            if (this.Quantity <= 0 ) {
+                throw new CheckStock("The stock for the product is empty. Please restock");
             }
-            // check if the selected product has already had added to the order
-            else if (order.getProductId() > 0 && order.getProductId() == this.ProductId) {
-                throw new CheckProduct("The selected product has already been added to the given order");
+            // check if the wanted quantity for the product is valid
+            else if (Quantity <= 0) {
+                throw new CheckStock("The wanted quantity for the product is invalid");
             }
-            // If the product does not have valid ID
-            else if (this.ProductId <= 0 || ProductPrice <= 0) {
-                throw new CheckProduct("The selected product is not valid, Cannot add to the given order");
+            else if (Quantity > this.Quantity) {
+                throw new CheckStock("The wanted quantity for the product is larger than the stock.");
             }
-            // if the order does not have any product, and the selected product ID is not null, add the product to the order
-            else if (order.getProductId() > 0 && this.ProductId > 0) {
-                order.setProductId(this.ProductId);
+            else {
+                this.Quantity -= Quantity;
             }
-        } catch (CheckProduct e) {
+
+        } catch (CheckStock e) {
             throw new RuntimeException(e);
         }
     }
