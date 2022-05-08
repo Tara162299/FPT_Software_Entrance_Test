@@ -154,8 +154,6 @@ public class Customer {
         String lineToRemove = "Customer: " + CustomerName + "| ID: " + CustomerID + "| Address:  " + Address + "| Phone: " + Phone + "\n";
         String currentLine;
 
-        int count = 0;
-
         while ((currentLine = reader.readLine()) != null) {
             // trim newline when comparing with lineToRemove
             String trimmedLine = currentLine.trim();

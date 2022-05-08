@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import Exception.Customer.CheckCustomerName;
 import Exception.Order.CheckOrderAmount;
 import Exception.Order.CheckOrderDate;
 import Exception.Order.CheckOrderID;
+import Exception.Product.CheckProduct;
 import Exception.Product.CheckProductID;
 
 public class Order {
@@ -101,9 +103,27 @@ public class Order {
     }
 
     public void CreateOrder(Customer customer) {
+        //Check the validity of Customer's ID
+        try {
+            if (customer.getCustomerID() <= 0) {
+                throw new CheckCustomerName("The customer ID is not valid. Please enter a valid ID");
+            } else {
+                this.CustomerId = customer.getCustomerID();
+            }
+        } catch (CheckCustomerName ex) {
+            ex.printStackTrace();
+        }
 
-        this.CustomerId = customer.getCustomerID();
-        this.CustomerName = customer.getCustomerName();
+        //Check format of Customer's name
+        try {
+            if (customer.getCustomerName() == null || customer.getCustomerName().equals("")) {
+                throw new CheckCustomerName("The customer name is not valid. Please enter a valid name");
+            } else {
+                this.CustomerName = customer.getCustomerName();
+            }
+        } catch (CheckCustomerName ex) {
+            ex.printStackTrace();
+        }
 
         File file = new File("Resources/Orders.txt");
         FileWriter fw;
@@ -187,5 +207,4 @@ public class Order {
             throw new RuntimeException(e);
         }
     }
-
 }
