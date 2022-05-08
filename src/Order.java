@@ -24,9 +24,25 @@ public class Order {
     public int getProductId() {
         return ProductId;
     }
+    public int getOrderId() {
+        return OrderId;
+    }
+    public String getCustomerName() {
+        return CustomerName;
+    }
+    public float getOrderAmount() {
+        return Amount;
+    }
+    public String getOrderDate() {
+        return OrderDate;
+    }
 
     public void setProductId(int ProductId) {
         this.ProductId = ProductId;
+    }
+
+    public int getCustomerId() {
+        return CustomerId;
     }
 
     public Order() {

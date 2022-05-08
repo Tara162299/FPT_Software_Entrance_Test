@@ -1,13 +1,15 @@
 import Exception.Customer.CheckCustomerName;
 import Exception.Product.CheckProduct;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Runner {
     public static void main(String[] args) throws CheckCustomerName {
@@ -26,35 +28,36 @@ public class Runner {
         }
 
         Order order1 = new Order(1, 5, 5f, "15/11/2022");
-        order1.CreateOrder(customer2);
-        order1.CreateOrder(customer2);
+        order1.CreateOrder(customer1);
+
 
         Order order2 = new Order();
         order2.EditOrder(2, 12, 4f, "16/08/2022");
 
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders.add(order1);
+        orders.add(order2);
+
+        displayOrder(1, orders);
+        displayOrder(2, orders);
+
     }
 
-    static String displayOrder(int CustomerId) {
+    static void displayOrder(int CustomerId, ArrayList<Order> orders) {
+        boolean existOrder = false;
 
-        try {
-            // check if the selected order has already had a different product
-            if (customer.getCustomerID() == CustomerId) {
-                return ("Order ID: " + OrderId + "| Customer name: " + CustomerName + "| Customer ID: " + CustomerId + "| Product ID: " + ProductId
-                        + "| Amount: " + Amount + "| Order date: " + OrderDate + "\n");
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getCustomerId() == CustomerId) {
+                System.out.println("The order(s) from customer with the ID: " + CustomerId + " are: ");
+                System.out.println("Order ID: " + orders.get(i).getOrderId() + "| Customer name: " + orders.get(i).getCustomerName() + "| Customer ID: " + orders.get(i).getCustomerId() + "| Product ID: "
+                        + orders.get(i).getProductId() + "| Amount: " + orders.get(i).getOrderAmount() + "| Order date: " + orders.get(i).getOrderDate() + "\n");
+
+                existOrder = true;
             }
-            // check if the selected product has already had added to the order
-            else if (order.getProductId() > 0 && order.getProductId() == this.ProductId) {
-                throw new CheckProduct("The selected product has already been added to the given order");
-            }
-            // If the product does not have valid ID
-            else if (this.ProductId <= 0 || ProductPrice <= 0) {
-                throw new CheckProduct("The selected product is not valid, Cannot add to the given order");
-            }
-            // if the order does not have any product, and the selected product ID is not null, add the product to the order
-            else if (order.getProductId() > 0 && this.ProductId > 0) {
-                order.setProductId(this.ProductId);
-            }
-        } catch (CheckProduct e) {
-            throw new RuntimeException(e);
         }
+
+        if (existOrder == false) {
+            System.out.println("There is no such order from customer with the ID: " + CustomerId);
+        }
+    }
 }

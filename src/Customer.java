@@ -157,7 +157,9 @@ public class Customer {
         while ((currentLine = reader.readLine()) != null) {
             // trim newline when comparing with lineToRemove
             String trimmedLine = currentLine.trim();
-            if(trimmedLine.equals(lineToRemove)) continue;
+            if (trimmedLine.equals(lineToRemove)) {
+                continue;
+            }
             writer.write(currentLine + System.getProperty("line.separator"));
         }
 
