@@ -25,12 +25,22 @@ public class Customer {
     }
 
     public Customer(int CustomerID, String CustomerName, String Address, String Phone) {
-        this.CustomerID = CustomerID;
+
+        //Check the validity of Customer's ID
+        try {
+            if (CustomerID <= 0) {
+                throw new CheckCustomerName("The customer ID is not valid. Please enter a valid ID");
+            } else {
+                this.CustomerID = CustomerID;
+            }
+        } catch (CheckCustomerName ex) {
+            ex.printStackTrace();
+        }
 
         //Check format of Customer's name
         try {
             if (CustomerName == null || CustomerName.equals("")) {
-                throw new CheckCustomerName("The customer name is not valid");
+                throw new CheckCustomerName("The customer name is not valid. Please enter a valid name");
             } else {
                 this.CustomerName = CustomerName;
             }
@@ -45,8 +55,12 @@ public class Customer {
             //Pattern for phone's format for 0978325511
             Pattern PhonePattern = Pattern.compile("^(\\d{3}[- .]?){2}\\d{4}$");
 
-            if (!(PhonePattern.matcher(Phone).matches())) {
-                throw new CheckCustomerName("The customer phone number is not valid");
+            if (Phone == null) {
+                this.Phone = null;
+            } else if (Phone == "") {
+                this.Phone = "";
+            }else if (!(PhonePattern.matcher(Phone).matches())) {
+                throw new CheckCustomerName("The customer phone number is not valid. Please enter a valid phone number");
             } else {
                 this.Phone = Phone;
             }
@@ -57,8 +71,9 @@ public class Customer {
 
     //Add existing customer to the file of Customers
     public void AddCustomer() {
-        // Before adding, check if the customer has at least the name and ID
-        if (CustomerID != 0 && (CustomerName != "" || CustomerName != null)) {
+
+        // Before adding, check if the customer has at least valid name and ID
+        if (CustomerID > 0 && (CustomerName != "" && CustomerName != null)) {
             File file = new File("Resources/Customers.txt");
             FileWriter fw;
             try {
@@ -72,17 +87,17 @@ public class Customer {
             }
         }
 
-        else if (CustomerID == 0){
+        else if (CustomerID <= 0){
             try {
-                throw new CheckCustomerID("The customer ID is not valid");
+                throw new CheckCustomerID("The customer ID is not valid. Cannot add this customer to the Customer file");
             } catch (CheckCustomerID e) {
                 throw new RuntimeException(e);
             }
         }
 
-        else if (CustomerName != "" || CustomerName != null) {
+        else if (CustomerName == "" || CustomerName == null) {
             try {
-                throw new CheckCustomerName("The customer name is not valid");
+                throw new CheckCustomerName("The customer name is not valid. Cannot add this customer to the Customer file");
             } catch (CheckCustomerName e) {
                 throw new RuntimeException(e);
             }
@@ -91,12 +106,21 @@ public class Customer {
 
     // Edit info from an existing Customer, including all attributes
     public void EditCustomer(int CustomerID, String CustomerName, String Address, String Phone) {
-        this.CustomerID = CustomerID;
+        //Check the validity of Customer's ID
+        try {
+            if (CustomerID <= 0) {
+                throw new CheckCustomerName("The adjusted value for customer ID is not valid");
+            } else {
+                this.CustomerID = CustomerID;
+            }
+        } catch (CheckCustomerName ex) {
+            ex.printStackTrace();
+        }
 
         //Check format of Customer's name
         try {
             if (CustomerName == null || CustomerName.equals("")) {
-                throw new CheckCustomerName("The customer name is not valid");
+                throw new CheckCustomerName("The adjusted value for customer name is not valid");
             } else {
                 this.CustomerName = CustomerName;
             }
@@ -113,8 +137,10 @@ public class Customer {
 
             if (Phone == null) {
                 this.Phone = null;
+            } else if (Phone == "") {
+                this.Phone = "";
             } else if (!(PhonePattern.matcher(Phone).matches())) {
-                throw new CheckCustomerName("The customer phone number is not valid");
+                throw new CheckCustomerName("The adjusted value for customer phone number is not valid");
             } else {
                 this.Phone = Phone;
             }

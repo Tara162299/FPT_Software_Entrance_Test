@@ -5,8 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import Exception.Customer.CheckCustomerName;
 import Exception.Order.CheckOrderAmount;
 import Exception.Order.CheckOrderDate;
+import Exception.Order.CheckOrderID;
+import Exception.Product.CheckProduct;
+import Exception.Product.CheckProductID;
 
 public class Order {
     private int OrderId;
@@ -29,8 +33,27 @@ public class Order {
     }
 
     public Order(int OrderId, int ProductId, float Amount, String OrderDate) {
-        this.OrderId = OrderId;
-        this.ProductId = ProductId;
+        //Check the validity of Order's ID
+        try {
+            if (OrderId <= 0) {
+                throw new CheckOrderID("The order ID is not valid. Please enter a valid ID");
+            } else {
+                this.OrderId = OrderId;
+            }
+        } catch (CheckOrderID ex) {
+            ex.printStackTrace();
+        }
+
+        //Check the validity of Product's ID
+        try {
+            if (ProductId <= 0) {
+                throw new CheckProductID("The product ID for the order is not valid. Please enter a valid ID");
+            } else {
+                this.ProductId = ProductId;
+            }
+        } catch (CheckProductID ex) {
+            ex.printStackTrace();
+        }
 
         //Check validity of Order's amount
         try {
@@ -77,23 +100,29 @@ public class Order {
     }
 
     public void CreateOrder(Customer customer) {
+        boolean checkOrderValid = false;
         this.CustomerId = customer.getCustomerID();
         this.CustomerName = customer.getCustomerName();
 
         File file = new File("Resources/Orders.txt");
         FileWriter fw;
-        try {
-            if (OrderId != 0 ) {
 
+        if (OrderId != 0 && ProductId != 0) {
+            checkOrderValid = true;
+        }
+
+        if (checkOrderValid = true) {
+            try {
+
+                fw = new FileWriter(file.getAbsolutePath(), true);
+                fw.write("Order ID: " + OrderId + "| Customer name: " + CustomerName + "| Customer ID: " + CustomerId + "| Product ID: " + ProductId
+                        + "| Amount: " + Amount + "| Order date: " + OrderDate + "\n");
+
+                fw.flush();
+                fw.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            fw = new FileWriter(file.getAbsolutePath(), true);
-            fw.write("Order ID: " + OrderId + "| Customer name: " + CustomerName + "| Customer ID: " + CustomerId + "| Product ID: " + ProductId
-                    + "| Amount: " + Amount + "| Order date: " + OrderDate + "\n");
-
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
